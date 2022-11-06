@@ -1,0 +1,37 @@
+def get_model():
+    base_model = tf.keras.models.Sequential([
+        tf.keras.layers.Conv2D(filters=16, kernel_size=(5,5), strides=(2,2), activation=None, input_shape=(224,224,3)),
+        tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.Activation('relu'),
+        tf.keras.layers.AveragePooling2D(pool_size=(3,3), strides=(2,2)),
+        tf.keras.layers.Conv2D(filters=32, kernel_size=(5,5), strides=(1,1), activation=None, padding="same"),
+        tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.Activation('relu'),
+        tf.keras.layers.AveragePooling2D(pool_size=(3,3), strides=(2,2)),
+        #tf.keras.layers.Conv2D(filters=64, kernel_size=(3,3), strides=(1,1), activation='relu', padding="same"),
+        #tf.keras.layers.BatchNormalization(),
+        #tf.keras.layers.Conv2D(filters=128, kernel_size=(3,3), strides=(1,1), activation='relu', padding="same"),
+        #tf.keras.layers.BatchNormalization(),
+        #tf.keras.layers.Conv2D(filters=80, kernel_size=(3,3), strides=(1,1), activation='relu', padding="same"),
+        #tf.keras.layers.BatchNormalization(),
+        #tf.keras.layers.MaxPool2D(pool_size=(3,3), strides=(2,2)),
+        tf.keras.layers.Flatten(),
+        #tf.keras.layers.Dense(4, activation='relu'),
+        #tf.keras.layers.Dropout(0.5),
+        #tf.keras.layers.Dense(2, activation='relu'),
+        #tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(64, activation='relu'),
+    ])
+
+    out = base_model.output
+    prediction = tf.keras.layers.Dense(1, activation="linear")(out)
+    model = tf.keras.Model(inputs = base_model.input, outputs = prediction)
+    
+    return model
+
+def get_model_name(k):
+    return 'NewNet_'+str(k)+'.h5'
+
+tf.test.gpu_device_name()
+
+model = get_model()
